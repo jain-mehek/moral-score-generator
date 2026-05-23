@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ledger Entry Value Generator</title>
+  <title>The Annual Ledger Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@
       border: 2px solid #000000;
       border-radius: 0;
       padding: 30px;
-      max-width: 500px;
+      max-width: 560px;
       margin: auto;
     }
 
@@ -27,13 +27,31 @@
       font-size: 24px;
     }
 
+    .output-box {
+      border: 2px solid #000000;
+      padding: 20px;
+      margin: 22px 0;
+    }
+
+    .output-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
     #score {
       font-size: 72px;
       font-weight: bold;
       color: #000000;
-      margin: 30px 0;
-      border: 2px solid #000000;
-      padding: 20px;
+      line-height: 1;
+    }
+
+    #domain {
+      font-size: 28px;
+      font-weight: bold;
+      color: #000000;
+      margin-top: 8px;
     }
 
     button {
@@ -74,11 +92,19 @@
   <div class="card">
     <div class="label">ANNUAL LEDGER</div>
 
-    <h1>Ledger Entry Score Generator</h1>
+    <h1>Ledger Entry Generator</h1>
 
-    <div id="score">--</div>
+    <div class="output-box">
+      <div class="output-label">Score Change</div>
+      <div id="score">--</div>
+    </div>
 
-    <button onclick="generateScore()">Generate</button>
+    <div class="output-box">
+      <div class="output-label">Domain</div>
+      <div id="domain">--</div>
+    </div>
+
+    <button onclick="generateEntry()">Generate</button>
 
     <p class="note">
       Scores range from -200 to +200. Lower magnitudes are more common; major score changes are rare.
@@ -86,17 +112,33 @@
   </div>
 
   <script>
-    function generateScore() {
-      let randomValue = Math.random();
-      let skewedValue = randomValue * randomValue;
+    const domains = [
+      "Work / School",
+      "Interpersonal Relationships",
+      "Civic Responsibility",
+      "Consumption / Money",
+      "Environment / Ecology"
+    ];
 
+    function generateEntry() {
+      // Generate score magnitude from 0 to 200.
+      // Cubing the random value makes lower magnitudes much more common.
+      let randomValue = Math.random();
+      let skewedValue = randomValue * randomValue * randomValue;
       let score = Math.round(skewedValue * 200);
 
+      // 50/50 chance of positive or negative.
       let sign = Math.random() < 0.5 ? -1 : 1;
       let finalScore = score * sign;
 
+      // Randomly select a domain.
+      let randomDomainIndex = Math.floor(Math.random() * domains.length);
+      let domain = domains[randomDomainIndex];
+
       document.getElementById("score").textContent =
         finalScore > 0 ? "+" + finalScore : finalScore;
+
+      document.getElementById("domain").textContent = domain;
     }
   </script>
 </body>
